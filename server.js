@@ -42,4 +42,5 @@ app.post('/post', (req, res) => {
         temperature: req.body.temperature,
         feelings: req.body.feelings
     };
+    res.send('Success')
 })

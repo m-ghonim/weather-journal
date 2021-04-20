@@ -9,7 +9,7 @@ const key = "72c36cb8ad1516dbddc9c5e07febae33";
 // Receives Error object and a message, prints object to console and displays the message to the user
 function throwError(err, msg) {
   // print error to console
-  console.error(msg)
+  console.error(msg);
   console.error(err);
 
   // flash error message to user
@@ -31,20 +31,19 @@ async function getWeather(zip, units = "metric") {
 }
 
 /* Receive weather data and post (Date, Temperature and User-input) to server*/
-const postData = async (data, url = "/post") => {
+async function postData(data) {
   // Create a new date instance
   const d = new Date();
   const date = d.toDateString();
-  // Get user-input
+  // Get user entry
   const feelings = document.getElementById("txtFeelings").value;
   // Get temperature
   const temperature = data.main.temp;
-  // console.log('xxx ', temperature)
   // Prepare data to send
   const payload = { date, temperature, feelings };
 
   // Send data to server
-  const response = await fetch(url, {
+  const response = await fetch('/post', {
     method: "POST",
     credentials: "same-origin",
     headers: {
@@ -56,23 +55,30 @@ const postData = async (data, url = "/post") => {
 
 // Get most recent user entry and display it
 async function getRecentEntry() {
-  const respo = await fetch('/recent')
+  const respo = await fetch("/recent")
     .then((response) => response.json())
     .then((data) => {
-      const divDate = document.getElementById('date');
-      const divTemp = document.getElementById('temp');
-      const divContent = document.getElementById('content');
+      const divDate = document.getElementById("date");
+      const divTemp = document.getElementById("temp");
+      const divContent = document.getElementById("content");
       divDate.textContent = `Date: ${data.date}`;
       divTemp.innerHTML = `Temperature is ${data.temperature}&deg;c`;
       divContent.textContent = `${data.feelings}`;
     })
-    .catch((err) => throwError(err, "Error: Can't fetch most recent entry from server"));
+    .catch((err) => {
+      throwError(err, "Error: Can't fetch most recent entry from server");
+    });
 }
 
 /* GET weather data, POST data to server, retrieve this data via a GET request and display the result */
 function generateData() {
-  const zipCode = document.getElementById('txtZip').value
-  getWeather(zipCode).then((weatherData) => postData(weatherData));
+  // Get and validate user-input
+  const zipCode = document.getElementById("txtZip").value;
+  const feelings = document.getElementById("txtFeelings").value;
+  // If 
+  getWeather(zipCode)
+    .then((weatherData) => postData(weatherData))
+    .then(() => getRecentEntry());
 }
 
 /* ------------------ Event listeners ------------------ */

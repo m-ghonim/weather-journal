@@ -24,4 +24,6 @@ This is an asynchronous web app. It uses [openweathermap.org](https://openweathe
 - `units` can be either 'standard', 'metric' or 'imperial'. Default value is 'metric'.
 ## Version History
 - Initial commit
-- Add functions to fetch weather data and minor HTML structure changes
+- Add function to fetch weather data
+- Add function to send date, temperature and user feelings to server
+- Add function to retrieve most recent data from server and display it
