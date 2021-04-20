@@ -64,6 +64,9 @@ async function getRecentEntry() {
       divDate.textContent = `Date: ${data.date}`;
       divTemp.innerHTML = `Temperature is ${data.temperature}&deg;c`;
       divContent.textContent = `${data.feelings}`;
+      const msgArea = document.getElementById("flash-msg");
+      msgArea.classList.remove("msg-error");
+      msgArea.textContent = "";
     })
     .catch((err) => {
       throwError(err, "Error: Can't fetch most recent entry from server");
@@ -72,10 +75,28 @@ async function getRecentEntry() {
 
 /* GET weather data, POST data to server, retrieve this data via a GET request and display the result */
 function generateData() {
-  // Get and validate user-input
+  // Get user input
   const zipCode = document.getElementById("txtZip").value;
   const feelings = document.getElementById("txtFeelings").value;
-  // If 
+
+  // Validate ZIP code
+  const regex = /\d+/
+  if ( !regex.test(zipCode) ) {
+    const msgArea = document.getElementById("flash-msg");
+    msgArea.classList.add("msg-error");
+    msgArea.textContent = "Please enter a valid US ZIP code!";
+    return
+  }
+
+  // Test for empty required fields
+  if (feelings == "") {
+    const msgArea = document.getElementById("flash-msg");
+    msgArea.classList.add("msg-error");
+    msgArea.textContent = "Feelings field is required!";
+    return
+  }
+
+  // Everything ok, execute main functions
   getWeather(zipCode)
     .then((weatherData) => postData(weatherData))
     .then(() => getRecentEntry());
@@ -83,7 +104,8 @@ function generateData() {
 
 /* ------------------ Event listeners ------------------ */
 
-// Event listener to add function to existing HTML DOM element
-
-const btnGenerate = document.getElementById("btnGenerate");
-btnGenerate.addEventListener("click", generateData);
+// Wait for DOM to load
+window.addEventListener('DOMContentLoaded', (event) => {
+  const btnGenerate = document.getElementById("btnGenerate");
+  btnGenerate.addEventListener("click", generateData);
+});

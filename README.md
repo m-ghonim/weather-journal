@@ -6,6 +6,9 @@
 * [Requirements](#requirements)
 * [Function Documentation](#function-documentation)
     - [getWeather(zip, units)](#getweatherzip-units)
+    - [postData()](#postdatadata)
+    - [getRecentEntry()](#getrecententry)
+    - [throwError(err, msg)](#throwerrorerr-msg))
 * [Version History](#version-history)
 
 ## Overview
@@ -22,8 +25,19 @@ This is an asynchronous web app. It uses [openweathermap.org](https://openweathe
 ### getWeather(zip, units)
 - Fetches US weather data from [openweathermap.org](https://openweathermap.org/) based on supplied zip code.
 - `units` can be either 'standard', 'metric' or 'imperial'. Default value is 'metric'.
+
+### postData(data)
+- Takes weather data as an argument and then posts the (Date, Temperature and User-input) to server
+
+### getRecentEntry()
+-  Fetch most recent entry from the server and display it to the user
+
+### throwError(err, msg)
+- Helper function to handle errors
+- Takes an Error object `err` and a message `msg` , prints the Error object to console and displays the message to the user on the web page
+
 ## Version History
 - Initial commit
 - Add function to fetch weather data
-- Add function to send date, temperature and user feelings to server
+- Add function to POST date, temperature and user feelings to server
 - Add function to retrieve most recent data from server and display it
