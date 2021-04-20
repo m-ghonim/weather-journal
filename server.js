@@ -17,6 +17,7 @@ app.use(bodyParser.json());
 
 // Cors for cross origin allowance
 const cors = require('cors');
+const { request } = require('express');
 app.use(cors());
 
 // Initialize the main project folder
@@ -29,11 +30,16 @@ const server = app.listen(port, () => {console.log(`running on localhost: ${port
 
 /* ------------------------ Routes ------------------------ */
 // Initialize all route and respond with JS object when a GET request is made to the homepage
-app.get('/all', (req, res) => {
+app.get('/recent', (req, res) => {
     res.send(projectData);
 })
 
 // Post Route, receive weather and user-entry data from clientside and add it to projectData object
-app.post('/add', (req, res) => {
-    //TODO
+app.post('/post', (req, res) => {
+    // Record date, temperature and user feelings
+    projectData = {
+        date: req.body.date,
+        temperature: req.body.temperature,
+        feelings: req.body.feelings
+    };
 })
