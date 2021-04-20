@@ -41,3 +41,4 @@ This is an asynchronous web app. It uses [openweathermap.org](https://openweathe
 - Add function to fetch weather data
 - Add function to POST date, temperature and user feelings to server
 - Add function to retrieve most recent data from server and display it
+- Nominal changes to comply with Project Rubric

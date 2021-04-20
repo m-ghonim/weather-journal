@@ -31,19 +31,19 @@ async function getWeather(zip, units = "metric") {
 }
 
 /* Receive weather data and post (Date, Temperature and User-input) to server*/
-async function postData(data) {
+async function postData(url, data) {
   // Create a new date instance
   const d = new Date();
   const date = d.toDateString();
   // Get user entry
-  const feelings = document.getElementById("txtFeelings").value;
+  const feelings = document.getElementById("feelings").value;
   // Get temperature
   const temperature = data.main.temp;
   // Prepare data to send
   const payload = { date, temperature, feelings };
 
   // Send data to server
-  const response = await fetch('/post', {
+  const response = await fetch(url, {
     method: "POST",
     credentials: "same-origin",
     headers: {
@@ -61,9 +61,9 @@ async function getRecentEntry() {
       const divDate = document.getElementById("date");
       const divTemp = document.getElementById("temp");
       const divContent = document.getElementById("content");
-      divDate.textContent = `Date: ${data.date}`;
-      divTemp.innerHTML = `Temperature is ${data.temperature}&deg;c`;
-      divContent.textContent = `${data.feelings}`;
+      divDate.innerHTML = `${data.date}`;
+      divTemp.innerHTML = `${data.temperature}`;
+      divContent.innerHTML = `${data.feelings}`;
       const msgArea = document.getElementById("flash-msg");
       msgArea.classList.remove("msg-error");
       msgArea.textContent = "";
@@ -76,8 +76,8 @@ async function getRecentEntry() {
 /* GET weather data, POST data to server, retrieve this data via a GET request and display the result */
 function generateData() {
   // Get user input
-  const zipCode = document.getElementById("txtZip").value;
-  const feelings = document.getElementById("txtFeelings").value;
+  const zipCode = document.getElementById("zip").value;
+  const feelings = document.getElementById("feelings").value;
 
   // Validate ZIP code
   const regex = /\d+/
@@ -98,7 +98,7 @@ function generateData() {
 
   // Everything ok, execute main functions
   getWeather(zipCode)
-    .then((weatherData) => postData(weatherData))
+    .then((weatherData) => postData('/post', weatherData))
     .then(() => getRecentEntry());
 }
 
@@ -106,6 +106,6 @@ function generateData() {
 
 // Wait for DOM to load
 window.addEventListener('DOMContentLoaded', (event) => {
-  const btnGenerate = document.getElementById("btnGenerate");
-  btnGenerate.addEventListener("click", generateData);
+  const generate = document.getElementById("generate");
+  generate.addEventListener("click", generateData);
 });
